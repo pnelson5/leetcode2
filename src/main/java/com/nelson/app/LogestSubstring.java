@@ -7,31 +7,38 @@ public class LogestSubstring {
     
     public int lengthOfLongestSubstring(String s) {
 
-        int longest = 0;
-        for (int i = 0; i < s.length(); i++) {
-
-            int maybeLongest = 1;
-
-            Set<Character> seen = new HashSet<>();
-
-            seen.add(s.charAt(i));
-            
-
-            for (int j = i + 1; j < s.length(); j++) {
-                
-                if (!seen.contains(s.charAt(j))) {
-                    seen.add(s.charAt(j));
-                    maybeLongest++;
-                } else {
-                    break;
-                }
-
-            }
-
-            longest = Math.max(longest, maybeLongest);
+           
+        if (s.length() <= 1) {
+            return s.length();
         }
         
+        int window = 1;
+        
+        int left = 0;
+        int right = 0;
+        
+        Set<Character> seen = new HashSet<>();
+        
+        for (int j = 0; j <s.length(); j++){
+                    seen.add(s.charAt(j));
 
-        return longest;
+        for (int i = j+1; i < s.length(); i++) {
+            // attempt to move right pointer
+            if (seen.contains(s.charAt(i))) {
+                // found repeat
+                window = Math.max(window, right - left + 1);
+                left++;
+                right = left;
+                seen = new HashSet<>();
+                    break;
+            } else {
+                seen.add(s.charAt(i));
+                right++;
+            }
+        }}
+        
+        window = Math.max(window, right - left + 1);
+        
+        return window;
     }
 }
